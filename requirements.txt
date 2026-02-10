@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+redis
+python-dotenv
+asyncpg
+pydantic
+pydantic-settings
+python-multipart
+alembic
+sqlalchemy
+email-validator
+httpx
+openai
