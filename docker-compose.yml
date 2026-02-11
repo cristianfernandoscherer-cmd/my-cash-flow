@@ -30,15 +30,16 @@ services:
       retries: 3
 
   transactions_mcf:
-    build: .
+    build: ./balance
     container_name: transactions_mcf
     ports:
       - "8081:8000"
     volumes:
-      - .:/app
-      - ./logs:/app/logs  
+      - ./balance:/app
+      - ./balance/logs:/app/logs  
     env_file:
       - .env
+      - ./balance/.env
     environment:
       - DATABASE_URL=postgresql://${DB_USER:-user}:${DB_PASSWORD:-pass}@postgres_mcf:5432/${DB_NAME:-mycashflow}
       - REDIS_URL=redis://redis_mcf:6379
@@ -53,6 +54,21 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+  
+  support:
+    build: ./support
+    container_name: support
+    ports:
+      - "8080:8000"
+    volumes:
+      - ./support:/app
+    env_file:
+      - ./support/.env
+    depends_on:
+      - redis_mcf
+      - transactions_mcf
+    environment:
+      - REDIS_URL=redis://redis_mcf:6379
 
 volumes:
   postgres-data:

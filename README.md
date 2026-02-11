@@ -1,4 +1,24 @@
-# Transactions Microservice 💸
+# My Cash Flow 💰
+
+Sistema de controle financeiro composto por múltiplos microsserviços, orquestrados via Docker Compose.
+
+## 📁 Estrutura do Projeto
+
+```text
+my-cash-flow/
+├── docker-compose.yml    # Orquestrador de todas as aplicações
+├── .env                  # Variáveis de ambiente compartilhadas
+└── balance/              # Microsserviço de transações
+    ├── src/
+    ├── docs/
+    ├── Dockerfile
+    ├── app.py
+    └── ...
+```
+
+---
+
+# Balance - Transactions Microservice 💸
 
 Microsserviço responsável pelo processamento de pagamentos e processamento de webhooks de múltiplos provedores (Mercado Pago, Santander, etc.), construído com **FastAPI** e seguindo os princípios da **Clean Architecture**.
 
@@ -13,7 +33,7 @@ O projeto foi refatorado para garantir manutenibilidade e escalabilidade, utiliz
 
 ### Estrutura de Pastas
 ```text
-src/
+balance/src/
 ├── application/    # Casos de uso (Orquestração)
 ├── domain/         # Entidades de negócio e Interfaces (Coração)
 ├── infra/          # Implementações concretas (Banco, APIs Externas)
@@ -35,18 +55,20 @@ O microsserviço pode ser executado de duas formas: manualmente (para desenvolvi
 
 #### Configuração
 1. Clone o repositório.
-2. Crie o seu arquivo `.env` baseado no exemplo:
+2. Crie o seu arquivo `.env` na raiz baseado no exemplo:
    ```bash
    cp .env.example .env
    ```
 3. Instale as dependências:
    ```bash
+   cd balance
    pip install -r requirements.txt
    ```
 
 #### Execução
 ```bash
 # Sincronizar banco (Migrations)
+cd balance
 python -m src.infra.data.cli setup
 
 # Rodar a API
@@ -55,15 +77,15 @@ python app.py
 
 ### Opção 2: Docker (Recomendado)
 
-O projeto está configurado para rodar em conjunto com os outros serviços através do `docker-compose` na raiz do projeto principal.
+O projeto está configurado para rodar em conjunto com os outros serviços através do `docker-compose` na raiz do projeto.
 
 ```bash
 # Na raiz do projeto (onde está o docker-compose.yml)
-docker-compose up --build transactions_ms
+docker-compose up --build transactions_mcf
 ```
 
 > [!IMPORTANT]
-> **Automação**: Ao rodar via Docker, as **migrations** são executados automaticamente pelo script [`entrypoint.sh`](./transactions_ms/entrypoint.sh) antes de iniciar a API.
+> **Automação**: Ao rodar via Docker, as **migrations** são executadas automaticamente pelo script [`entrypoint.sh`](./balance/entrypoint.sh) antes de iniciar a API.
 
 ---
 
@@ -72,6 +94,7 @@ Pode ser usado tanto localmente quanto dentro do container para manutenção:
 
 ```bash
 # Apenas atualizar estrutura (Migrations)
+cd balance
 python -m src.infra.data.cli migrate
 
 # Reverter alteração
@@ -81,7 +104,7 @@ python -m src.infra.data.cli rollback
 ## 🛡️ Segurança e Boas Práticas
 -   **GitIgnore**: Proteção contra envio de segredos para o repositório.
 -   **IA Protection**: Arquivo `.antigravityignore` para garantir privacidade contra leitura de segredos por IAs.
--   **Guia Técnico**: Documentação detalhada de regras de código disponível em [`docs/knowledge-base/technical-reference.md`](./docs/knowledge-base/technical-reference.md).
+-   **Guia Técnico**: Documentação detalhada de regras de código disponível em [`docs/knowledge-base/technical-reference.md`](./balance/docs/knowledge-base/technical-reference.md).
 
 ## 🛠️ Tecnologias Principais
 - **FastAPI**: Web Framework de alta performance.
