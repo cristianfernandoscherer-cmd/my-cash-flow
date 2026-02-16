@@ -1,5 +1,7 @@
 import logging
 import json
+import time 
+import os   
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
@@ -38,6 +40,8 @@ async def health_check():
     try:
         # Verifica se o compiled_app está carregado
         app_status = "loaded" if compiled_app is not None else "not_loaded"
+        
+        start_time = time.time()
         
         # Calcula o uptime
         uptime_seconds = int(time.time() - start_time)

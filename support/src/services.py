@@ -28,7 +28,9 @@ def get_balance(start_date: str, end_date: str, message: Optional[str] = None) -
         "end_date": end_date
     }
     
-    url = "http://transactions_mcf:8000/api/v1/transactions/period"
+    base_url = os.getenv('TRANSACTIONS_URL')
+
+    url = f"{base_url}/api/v1/transactions/period"
     
     try:
         logger.info(f"➡️ Enviando requisição GET SALDO para {url}")
