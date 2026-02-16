@@ -11,3 +11,7 @@ sqlalchemy
 email-validator
 httpx
 openai
+pytest
+pytest-mock
+pytest-asyncio
+pytest-cov

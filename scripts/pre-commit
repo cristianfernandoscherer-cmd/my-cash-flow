@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo "Running coverage check for balance service..."
+make coverage-balance
+if [ $? -ne 0 ]; then
+    echo "❌ Balance coverage check failed! Code coverage is below 90%."
+    exit 1
+fi
+echo "✅ Balance coverage check passed!"
+
+echo "Running coverage check for support service..."
+make coverage-support
+if [ $? -ne 0 ]; then
+    echo "❌ Support coverage check failed! Code coverage is below 70%."
+    exit 1
+fi
+echo "✅ Support coverage check passed!"

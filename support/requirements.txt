@@ -9,3 +9,6 @@ langgraph-checkpoint-redis
 langchain-community
 httpx
 python-dotenv
+pytest
+pytest-cov
+pytest-mock
