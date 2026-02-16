@@ -27,3 +27,52 @@ async def chat_endpoint(payload: ChatRequest):
     except Exception as e:
         logger.exception("Erro ao processar requisição no endpoint /chat")
         return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/health")
+async def health_check():
+    """
+    Endpoint de health check para o Railway
+    Retorna o status da aplicação e dependências
+    """
+    try:
+        # Verifica se o compiled_app está carregado
+        app_status = "loaded" if compiled_app is not None else "not_loaded"
+        
+        # Calcula o uptime
+        uptime_seconds = int(time.time() - start_time)
+        
+        # Testa rapidamente se o compiled_app responde (opcional)
+        app_test = "ok"
+        if compiled_app and hasattr(compiled_app, 'invoke'):
+            try:
+                # Teste simples para ver se o app responde
+                test_result = compiled_app.invoke({
+                    "messages": [{"role": "user", "content": "test"}]
+                })
+                app_test = "ok"
+            except Exception as e:
+                app_test = f"error: {str(e)[:50]}"
+        
+        return {
+            "status": "healthy",
+            "service": "support",
+            "timestamp": time.time(),
+            "uptime_seconds": uptime_seconds,
+            "compiled_app": app_status,
+            "app_test": app_test,
+            "environment": {
+                "port": os.getenv('PORT', '8000'),
+                "transactions_url": os.getenv('TRANSACTIONS_URL', 'not_set'),
+                "redis": "configured" if os.getenv('REDIS_URL') else "not_configured"
+            }
+        }
+    except Exception as e:
+        logger.error(f"Erro no health check: {e}")
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "unhealthy",
+                "error": str(e)
+            }
+        )
