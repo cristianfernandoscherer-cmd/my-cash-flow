@@ -1,6 +1,7 @@
 from langchain_core.tools import tool
 import requests
 import logging
+import os 
 from typing import Optional
 
 logger = logging.getLogger(__name__)
