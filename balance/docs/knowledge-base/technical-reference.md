@@ -80,3 +80,24 @@ python3 -m src.infra.data.cli rollback
 1.  **Sempre** verifique se a nova funcionalidade requer uma interface no `domain/interfaces/`.
 2.  **Sempre** atualize o `cli.py` se for necessário um novo tipo de automação de banco.
 3.  **Sempre** mantenha o Logger padronizado em `src/infra/core/logger.py`.
+
+---
+
+## 🧪 Padrões de Testes e Qualidade
+
+A garantia de qualidade é parte integrante do fluxo de desenvolvimento.
+
+### Estrutura de Testes
+Os testes devem espelhar a estrutura da aplicação (`src/`):
+- `tests/domain/models/`: Testes de unidades de modelos.
+- `tests/application/usecases/`: Testes de casos de uso (com mocks de repositórios).
+- `tests/infra/data/repositories/`: Testes de repositórios (com mocks de banco).
+
+### Cobertura de Código (Coverage)
+- **Meta**: 100% de cobertura em novas funcionalidades.
+- **Mínimo Aceitável**: 90% de cobertura global.
+- **Pre-commit**: Um hook de git impede commits que baixem a cobertura para menos de 90%.
+
+### Comandos Úteis (Makefile)
+- `make test-balance`: Roda a suíte de testes do balance.
+- `make coverage-balance`: Verifica a cobertura do balance.
