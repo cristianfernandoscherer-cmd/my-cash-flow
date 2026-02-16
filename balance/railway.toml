@@ -1,0 +1,31 @@
+# ============================================
+# Configuração do serviço transactions_ms (balance)
+# ============================================
+
+[build]
+# Usa Dockerfile (já que você tem um personalizado)
+builder = "DOCKERFILE"
+dockerfilePath = "./Dockerfile"
+
+[deploy]
+# Comando executado ANTES do deploy (release phase)
+preDeployCommand = "python -m src.infra.data.cli migrate"
+
+# Comando de inicialização (usa a porta do Railway)
+startCommand = "uvicorn src.main:app --host 0.0.0.0 --port ${PORT:-8000}"
+
+# Configurações de health check
+healthcheckPath = "/api/v1/health"
+healthcheckTimeout = 100
+
+# Política de reinicialização
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# Watch patterns - só faz deploy se mudar arquivos no balance/
+[deploy.watch]
+patterns = [
+  "/balance/**/*.py",
+  "/balance/Dockerfile",
+  "/balance/requirements.txt"
+]

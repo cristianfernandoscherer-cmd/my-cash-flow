@@ -14,17 +14,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
-# 🟢 Define start_time no nível do módulo (fora de qualquer função)
 START_TIME = time.time()
-
-# 🟢 Log de inicialização (executa quando o módulo é carregado)
-logger.info("="*50)
-logger.info("🚀 SUPPORT SERVICE INICIALIZANDO")
-logger.info(f"📡 compiled_app carregado: {compiled_app is not None}")
-logger.info(f"📡 PORT: {os.getenv('PORT', '8000')}")
-logger.info(f"📡 TRANSACTIONS_URL: {os.getenv('TRANSACTIONS_URL', 'não configurada')}")
-logger.info(f"🔑 OPENAI_API_KEY: {'configurada' if os.getenv('OPENAI_API_KEY') else 'NÃO CONFIGURADA'}")
-logger.info("="*50)
 
 @app.get("/health")
 async def health_check():
@@ -41,11 +31,6 @@ async def health_check():
     except Exception as e:
         logger.error(f"Erro no health check: {e}")
         return JSONResponse(status_code=500, content={"status": "error", "error": str(e)})
-
-@app.get("/health/simple")
-async def health_simple():
-    """Health check ultra simples - não faz nada além de responder"""
-    return {"status": "alive"}
 
 @app.post("/chat")
 async def chat_endpoint(payload: ChatRequest):
