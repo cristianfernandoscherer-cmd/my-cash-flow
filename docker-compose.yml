@@ -70,6 +70,16 @@ services:
     environment:
       - REDIS_URL=redis://redis_mcf:6379
 
+  frontend:
+    build: ./frontend
+    container_name: frontend_mcf
+    ports:
+      - "3000:80"
+    depends_on:
+      - support
+    restart: unless-stopped
+
+
 volumes:
   postgres-data:
   redis-data:

@@ -27,7 +27,7 @@ async def list_by_period(
     return ExpenseListResponse(
         total=len(transactions),
         balance=total,
-        expenses=[
+        transactions=[
             ExpenseResponse(
                 id=t.id,
                 item=t.item,
@@ -35,6 +35,7 @@ async def list_by_period(
                 data=t.data,
                 categoria=t.categoria,
                 descricao=t.descricao,
+                transaction_type=t.transaction_type,
                 created_at=t.created_at
             ) for t in transactions
         ]

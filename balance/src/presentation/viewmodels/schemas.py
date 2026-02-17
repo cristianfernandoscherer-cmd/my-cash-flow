@@ -10,12 +10,13 @@ class ExpenseResponse(BaseModel):
     data: date
     categoria: str
     descricao: str
+    transaction_type: str
     created_at: datetime
 
 class ExpenseListResponse(BaseModel):
     total: int
     balance: Decimal
-    expenses: List[ExpenseResponse]
+    transactions: List[ExpenseResponse]
 
 class HealthResponse(BaseModel):
     status: str
