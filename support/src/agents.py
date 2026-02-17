@@ -6,12 +6,24 @@ from dotenv import load_dotenv
 from src.services import get_balance, get_income, get_expenses
 from datetime import datetime
 from langgraph.checkpoint.redis import RedisSaver
+from langgraph.checkpoint.memory import MemorySaver
 
 load_dotenv()
 
-REDIS_URL = os.getenv("REDIS_URL") or "redis://redis_mcf:6379"
-saver = RedisSaver(redis_url=REDIS_URL)
-saver.setup()
+# Checkpoint system selection (persistence)
+if os.getenv("TESTING") == "true" or not os.getenv("REDIS_URL"):
+    # Use in-memory saver for tests or when Redis is not configured
+    saver = MemorySaver()
+else:
+    try:
+        REDIS_URL = os.getenv("REDIS_URL") or "redis://redis_mcf:6379"
+        saver = RedisSaver(redis_url=REDIS_URL)
+        # Only setup if it's a RedisSaver
+        if hasattr(saver, "setup"):
+            saver.setup()
+    except Exception:
+        # Fallback to memory if Redis fails
+        saver = MemorySaver()
 
 CURRENT_YEAR = datetime.now().year
 

@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import Mock, patch
 import os
+os.environ["TESTING"] = "true"
 
 # Mock OpenAI and langgraph dependencies before importing src.agents
 with patch("langchain_openai.ChatOpenAI"), \
