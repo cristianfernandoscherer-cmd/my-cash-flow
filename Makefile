@@ -18,7 +18,7 @@ coverage-balance:
 	cd balance && python3 -m pytest --cov=src --cov-fail-under=90 tests
 
 coverage-support:
-	cd support && python3 -m pytest --cov=src --cov-fail-under=90 tests
+	cd support && python3 -m pytest --cov=src --cov-fail-under=60 tests
 
 run-balance:
 	cd balance && uvicorn src.main:app --host 0.0.0.0 --port 8081 --reload

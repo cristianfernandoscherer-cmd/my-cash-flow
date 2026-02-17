@@ -54,9 +54,12 @@ async def chat_endpoint(payload: ChatRequest):
             logger.error("compiled_app não foi carregado!")
             return JSONResponse(status_code=500, content={"error": "Agente não disponível"})
             
-        result = compiled_app.invoke({
-            "messages": [{"role": "user", "content": f"{payload.message} session_id: {payload.session_id} client_id: {payload.client_id}"}]
-        })
+        config = {"configurable": {"thread_id": payload.session_id}}
+        
+        result = compiled_app.invoke(
+            {"messages": [{"role": "user", "content": payload.message}]},
+            config=config
+        )
         resposta = extrair_resposta_final(result)
         logger.info(f"Resposta gerada: {resposta}")
         return {"resposta": resposta}

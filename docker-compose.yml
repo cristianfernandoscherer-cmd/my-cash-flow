@@ -77,6 +77,8 @@ services:
       - "3000:80"
     depends_on:
       - support
+    environment:
+      - API_BASE_URL=http://localhost:8080
     restart: unless-stopped
 
 

@@ -12,8 +12,13 @@ COPY chris-avatar.png /usr/share/nginx/html/
 COPY user-avatar.png /usr/share/nginx/html/
 COPY README.md /usr/share/nginx/html/
 
+# Copy entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 # Expose port 80
 EXPOSE 80
 
-# Start nginx
+# Use a custom entrypoint to inject environment variables
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

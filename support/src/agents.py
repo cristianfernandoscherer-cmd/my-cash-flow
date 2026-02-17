@@ -5,8 +5,13 @@ import os
 from dotenv import load_dotenv
 from src.services import get_balance, get_income, get_expenses
 from datetime import datetime
+from langgraph.checkpoint.redis import RedisSaver
 
 load_dotenv()
+
+REDIS_URL = os.getenv("REDIS_URL") or "redis://redis_mcf:6379"
+saver = RedisSaver(redis_url=REDIS_URL)
+saver.setup()
 
 CURRENT_YEAR = datetime.now().year
 
@@ -69,4 +74,4 @@ workflow = create_supervisor(
     """
 )
 
-compiled_app = workflow.compile()
+compiled_app = workflow.compile(checkpointer=saver)

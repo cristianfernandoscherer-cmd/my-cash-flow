@@ -1,5 +1,5 @@
 // Configuration
-const API_BASE_URL = 'http://localhost:8080'; // Support service URL
+const API_BASE_URL = '__API_BASE_URL__'; // Placeholder for runtime substitution
 const HEALTH_CHECK_INTERVAL = 30000; // 30 seconds
 
 // Session Management
